@@ -42,19 +42,16 @@ def inserir_categoria_bd(conexao, nome):
     cursor.execute(sql_insert)
     conexao.commit()
 
-def atualizar_categoria(conexao):
+def atualizar_categoria_bd(conexao,id,nome):
     print("Alterando dados dos Categoria")
     cursor = conexao.cursor()
-    id   = input("Digite o ID : ")
-    nome = input("Nome :")
-    sql_update = "update categoria set nome ='" + nome + "' where id = "+ id
+    sql_update = "update categoria set nome ='" + nome + "' where id = "+ str(id)
     cursor.execute(sql_update)
     conexao.commit()
 
-def deletar_categoria(conexao):
+def deletar_categoria_bd(conexao,id):
     print("Deletando Categoria")
     cursor = conexao.cursor()
-    id   = input("Digite o ID : ")
-    sql_delete = "delete from categoria where id = "+ id
+    sql_delete = "delete from categoria where id = " + str(id)
     cursor.execute(sql_delete)
     conexao.commit()
