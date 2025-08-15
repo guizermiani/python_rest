@@ -45,39 +45,29 @@ def consultar_produto_por_id_bd(conexao,id):
         return dados
 
 
-def inserir_produto_bd(conexao):
+def inserir_produto_bd(conexao, nome, valor_venda, estoque, categoria_id):
     print("Inserindo o Produto ..: ")
     cursor = conexao.cursor()
-    nome = input("Nome :")
-    valor_venda = float(("Valor Venda :"))
-    estoque = float(("Estoque :"))
-    categoria_id = int(input("ID Categoria: "))
 
-    sql_insert = "insert into produto (nome,valor_venda,estoque,categoria_id) values ( %s, %s,%s, %s )"
+    sql_insert = "insert into produto (nome,valor_venda,estoque,categoria_id) values ( %s, %s, %s, %s )"
+    
     dados = (nome,valor_venda,estoque,categoria_id)
-
     cursor.execute(sql_insert, dados)
     conexao.commit()
 
-def atualizar_produto_bd(conexao):
+def atualizar_produto_bd(conexao, nome, valor_venda, estoque, categoria_id, id):
     print("Alterando dados dos Produtos")
     cursor = conexao.cursor()
-    id   = input("Digite o ID : ")
-
-    nome = input("Nome :")
-    valor_venda = float(("Valor Venda :"))
-    estoque = float(("Valor Venda :"))
-
-    sql_update = "update produto set nome = %s, valor_venda = %s, estoque = %s where id = %s"
-    dados = (nome,valor_venda,estoque,id)
+    
+    sql_update = "update produto set nome = %s, valor_venda = %s, estoque = %s, categoria_id = %s where id = %s"
+    dados = (nome, valor_venda, estoque, categoria_id, id)
 
     cursor.execute(sql_update,dados)
     conexao.commit()
 
-def deletar_produto_bd(conexao):
+def deletar_produto_bd(conexao, id):
     print("Deletando Produto")
     cursor = conexao.cursor()
-    id   = input("Digite o ID : ")
-    sql_delete = "delete from produto where id = "+ id
+    sql_delete = "delete from produto where id = " + str(id)
     cursor.execute(sql_delete)
     conexao.commit()
