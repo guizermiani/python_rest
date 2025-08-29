@@ -6,12 +6,14 @@ from bd.produto import listar_produto_bd, consultar_produto_por_id_bd, inserir_p
 from routes.categoria_routes import categoria_bp
 from routes.produto_routes import produto_bp
 from routes.usuario_routes import usuario_bp
+from routes.vendas_routes import venda_bp
 
 def create_app():
     app = Flask(__name__)
     app.register_blueprint(categoria_bp)
     app.register_blueprint(produto_bp)
     app.register_blueprint(usuario_bp)
+    app.register_blueprint(venda_bp)
     return app
 
 

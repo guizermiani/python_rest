@@ -16,11 +16,6 @@ def listar_categoria(conexao):
     return categorias
 
 
-
-
-
-
-
 def consultar_categoria_por_id(conexao, id):
     cursor = conexao.cursor()
     cursor.execute("select id,nome from categoria where id = " + str(id))
