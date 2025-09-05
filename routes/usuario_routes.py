@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request, Blueprint
 from conexao import conecta_db
 
-from bd.usuario import listar_usuarios_bd, inserir_usuario_bd, login_bd
+from bd.usuario import listar_usuarios_bd, inserir_usuario_bd, login_bd, trocar_senha_bd
 
 usuario_bp = Blueprint("usuario", __name__, url_prefix = "/usuarios")
 
@@ -32,9 +32,18 @@ def login_usuario():
     
     login = dados['login']
     senha = dados['senha']
-    valida_login = login_bd(conexao, login, senha)
+    resultado = login_bd(conexao, login, senha)
+    return jsonify({"message": resultado})
 
-    if valida_login is True:
-        return jsonify({"message":"Usuário logado com sucesso!"})
-    else:
-        return jsonify({"message":"Usuário ou senha inválidos."})
+@usuario_bp.route("/trocarSenha", methods=["POST"])
+def trocarSenha():
+    conexao = conecta_db()
+    dados = request.get_json()
+    
+    login = dados['login']
+    senha = dados['senhaAtual']
+    novaSenha = dados['novaSenha']
+    confirmarSenha = dados['confirmarSenha']
+    resultado = trocar_senha_bd(conexao, login, senha, novaSenha, confirmarSenha)
+    return jsonify({"message": resultado})
+
