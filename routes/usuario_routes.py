@@ -4,15 +4,18 @@ from conexao import conecta_db
 from bd.usuario import listar_usuarios_bd, inserir_usuario_bd, login_bd, trocar_senha_bd
 
 usuario_bp = Blueprint("usuario", __name__, url_prefix = "/usuarios")
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 
 @usuario_bp.route("/", methods=["GET"])
+@jwt_required()
 def listar_usuarios():
     conexao = conecta_db()
     usuarios = listar_usuarios_bd(conexao)
     return jsonify(usuarios)
 
 @usuario_bp.route("/", methods=["POST"])
+@jwt_required()
 def salvar_usuario():
     conexao = conecta_db()
     dados = request.get_json()
@@ -36,6 +39,7 @@ def login_usuario():
     return jsonify({"message": resultado})
 
 @usuario_bp.route("/trocarSenha", methods=["POST"])
+@jwt_required()
 def trocarSenha():
     conexao = conecta_db()
     dados = request.get_json()
@@ -46,4 +50,6 @@ def trocarSenha():
     confirmarSenha = dados['confirmarSenha']
     resultado = trocar_senha_bd(conexao, login, senha, novaSenha, confirmarSenha)
     return jsonify({"message": resultado})
+
+
 

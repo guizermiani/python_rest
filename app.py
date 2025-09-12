@@ -7,9 +7,12 @@ from routes.categoria_routes import categoria_bp
 from routes.produto_routes import produto_bp
 from routes.usuario_routes import usuario_bp
 from routes.vendas_routes import venda_bp
+from flask_jwt_extended import JWTManager
 
 def create_app():
     app = Flask(__name__)
+    app.config['JWT_SECRET_KEY'] = 'designcursos'
+    jwt = JWTManager(app)
     app.register_blueprint(categoria_bp)
     app.register_blueprint(produto_bp)
     app.register_blueprint(usuario_bp)

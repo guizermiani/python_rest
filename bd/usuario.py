@@ -1,6 +1,7 @@
 from conexao import conecta_db
 from flask import jsonify
 import bcrypt
+from flask_jwt_extended import create_access_token
 
 def login_bd(conexao, login, senha) -> str:
     cursor = conexao.cursor()
@@ -18,7 +19,9 @@ def login_bd(conexao, login, senha) -> str:
             senha_bd_bytes = senha_bd
             
         if bcrypt.checkpw(senha_verificar, senha_bd_bytes):
-             return "Usuário logado com sucesso!"
+             acess_token = create_access_token(identity=login)
+             print(acess_token)
+             return acess_token
         else:
              return "Senha inválida."
         

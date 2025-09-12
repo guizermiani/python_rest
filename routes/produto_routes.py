@@ -2,23 +2,27 @@ from flask import Flask, jsonify, request, Blueprint
 from bd.produto import listar_produto_bd, consultar_produto_por_id_bd, inserir_produto_bd, atualizar_produto_bd, deletar_produto_bd
 from conexao import conecta_db
 
+from flask_jwt_extended import jwt_required
+
 
 produto_bp = Blueprint("produto", __name__, url_prefix = "/produtos")
 
-
 @produto_bp.route("/", methods=["GET"])
+@jwt_required()
 def listar_produtos():
     conexao = conecta_db()
     produtos = listar_produto_bd(conexao)
     return jsonify(produtos)
 
 @produto_bp.route("/<int:id>", methods=["GET"])
+@jwt_required()
 def consultar_produto_por_id(id):
     conexao = conecta_db()
     produtos = consultar_produto_por_id_bd(conexao,id)
     return jsonify(produtos)
 
 @produto_bp.route("/", methods=["POST"])
+@jwt_required()
 def salvar_produto():
     dados = request.get_json()
     nome = dados["nome"]
@@ -33,6 +37,7 @@ def salvar_produto():
 
 
 @produto_bp.route("/<int:id>", methods = ["PUT"])
+@jwt_required()
 def alterar_produto(id):
     dados = request.get_json()
     nome = dados["nome"]
@@ -45,6 +50,7 @@ def alterar_produto(id):
     return jsonify({"message": "Produto alterado com sucesso." })
 
 @produto_bp.route("/<int:id>", methods=["DELETE"])
+@jwt_required()
 def excluir_produto_por_id(id):
     conexao = conecta_db()
     deletar_produto_bd(conexao, id)

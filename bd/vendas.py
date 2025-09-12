@@ -69,3 +69,25 @@ def calcular_total_venda(itens_venda):
             for item in itens_venda:
                 total_venda = total_venda + item['valor_total']
             return total_venda
+
+def listar_vendas_bd(conexao):
+    cursor = conexao.cursor()
+    sql_listar = """select v.id, v.numero_venda, c.nome, v.valor_venda 
+                    from venda v
+                    inner join cliente c on v.id_cliente = c.id
+                    order by v.numero_venda asc, v.valor_venda desc
+                 """
+    
+    cursor.execute(sql_listar)
+
+    registros = cursor.fetchall()
+
+    vendas = []
+    for registro in registros:
+        venda = {
+            "numero_venda": registro[1],
+            "nome_cliente": registro[2],
+            "valor_venda": registro[3],
+        }
+        vendas.append(venda)
+    return vendas
